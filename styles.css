@@ -1,0 +1,327 @@
+:root{
+  --bg:#ffffff;
+  --text:#111827;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+  --accent:#1f4b99;
+
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --radius: 16px;
+  --shadow: 0 10px 28px rgba(0,0,0,.08);
+
+  --h1: clamp(26px, 3.2vw, 38px);
+  --h2: clamp(20px, 2.2vw, 28px);
+  --h3: clamp(18px, 1.8vw, 22px);
+  --p:  clamp(16px, 1.3vw, 18px);
+}
+
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+
+body{
+  margin:0;
+  font-family:var(--font);
+  color:var(--text);
+  background:var(--bg);
+  line-height:1.65;
+  position: relative;
+}
+
+/* ✅ 가시면류관 배경 워터마크 */
+body::before{
+  content:"";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+
+  /* 파일명 그대로 사용 */
+  background-image: url("./가시면류관.png");
+  background-repeat: no-repeat;
+
+  /* 디자인적으로 "예쁘게" : 우상단 쪽에 크게, 은은하게 */
+  background-position: right -120px top -120px;
+  background-size: min(980px, 110vw);
+
+  opacity: 0.14;
+  filter: saturate(0.95) contrast(1.05);
+  mix-blend-mode: multiply;
+}
+
+.container{
+  width:min(1120px, calc(100% - 32px));
+  margin:0 auto;
+  position: relative;
+  z-index: 1; /* 워터마크 위로 */
+}
+
+.single{
+  padding:22px 0 48px;
+}
+
+/* Hero */
+.hero{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:linear-gradient(180deg, rgba(31,75,153,.06), rgba(255,255,255,1));
+  padding:22px;
+  box-shadow: var(--shadow);
+}
+.hero__title{
+  margin:0 0 14px;
+  font-size:var(--h1);
+  letter-spacing:-.03em;
+}
+.hero__chips{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.chip{
+  text-decoration:none;
+  color:var(--accent);
+  border:1px solid rgba(31,75,153,.25);
+  background:#fff;
+  padding:10px 12px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:15px;
+}
+
+/* Cards */
+.card{
+  margin-top:18px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:#fff;
+  box-shadow: var(--shadow);
+  overflow:hidden;
+}
+.card__head{
+  padding:18px 20px;
+  border-bottom:1px solid var(--line);
+  background:#fff;
+}
+.card__title{
+  margin:0;
+  font-size:var(--h2);
+  letter-spacing:-.02em;
+}
+.card__body{ padding:18px 20px 22px; }
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  background:var(--accent);
+  color:#fff;
+  border:1px solid rgba(0,0,0,0);
+  padding:12px 14px;
+  border-radius:14px;
+  font-weight:900;
+  font-size:16px;
+}
+.btn:hover{ filter: brightness(.98); }
+
+.subsection{ margin-top:14px; }
+.subsection__title{
+  margin:0 0 10px;
+  font-size:var(--h3);
+  letter-spacing:-.01em;
+}
+
+/* Schedule */
+.schedule{
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+}
+.schedule__row{
+  display:grid;
+  grid-template-columns: 180px 1fr;
+  gap:10px;
+  padding:12px 14px;
+  background:#fff;
+}
+.schedule__row:nth-child(odd){ background:#fafafa; }
+.schedule__date{ font-weight:900; }
+.schedule__item{ font-size:var(--p); color:#374151; }
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  border: 1px solid var(--line);
+}
+
+.video-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+
+.gallery{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:10px;
+  margin-top:10px;
+}
+.thumb{
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+  cursor:pointer;
+  background:#f3f4f6;
+  min-height:110px;
+}
+.thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+/* ✅ 모달: "이미지 확대 시 스크롤 불가" 해결 */
+.modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  z-index:50;
+}
+.modal.is-open{ display:block; }
+.modal__backdrop{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.55);
+}
+/* ✅ 모달: 위/아래 최대 높이로(가로 폭은 그대로 유지) */
+.modal__panel{
+  position:relative;
+  width:min(980px, calc(100% - 24px)); /* ✅ 좌우 폭 그대로 */
+  margin: 2vh auto 0;                  /* ✅ 위 여백 최소화 */
+  background:#fff;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow: var(--shadow);
+
+  /* ✅ 화면 세로를 거의 꽉 채움 */
+  max-height: 96vh;
+  display:flex;
+  flex-direction: column;
+}
+
+/* ✅ 헤더 높이(상단바) 줄여서 그림 영역 확보 */
+.modal__head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 12px;     /* 기존보다 작게 */
+  border-bottom:1px solid var(--line);
+  flex: 0 0 auto;
+}
+
+/* ✅ 본문 패딩 줄이고 스크롤 영역 최대화 */
+.modal__body{
+  padding:6px;          /* 기존보다 작게 */
+  overflow:auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1 1 auto;
+}
+
+/* 이미지 자체는 가로에 맞춰 표시(기존 유지) */
+.modal__body img{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:12px;
+  max-width:100%;
+}
+
+
+/* 버튼 */
+.iconbtn{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:12px;
+  padding:8px 12px;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+.iconbtn--close{
+  font-size:16px;
+}
+
+@media (max-width: 900px){
+  .schedule__row{ grid-template-columns: 140px 1fr; }
+}
+@media (max-width: 720px){
+  .gallery{ grid-template-columns: repeat(2, 1fr); }
+  body::before{
+    background-position: right -160px top -160px;
+    background-size: 140vw;
+    opacity: 0.12;
+  }
+}
+
+/* 🔹 모달 전체 높이 거의 최대 */
+.modal__panel{
+  max-height: 98vh;      /* 거의 화면 끝까지 */
+  margin: 1vh auto 0;    /* 위 여백 최소 */
+}
+
+/* 🔹 상단바 거의 제거 수준 */
+.modal__head{
+  padding: 4px 8px;      /* 기존보다 더 줄임 */
+  min-height: 32px;
+}
+
+/* 🔹 제목 완전 제거 */
+.modal__title{
+  display:none !important;
+}
+
+/* 🔹 닫기 버튼 작게 */
+.iconbtn--close{
+  font-size:14px;
+  padding:4px 8px;
+  border-radius:8px;
+}
+
+/* 🔹 이미지 영역 최대 확보 */
+.modal__body{
+  padding: 4px;
+  overflow: auto;
+  flex:1;
+}
+
+/* 🔹 이미지 위아래 여백 최소 */
+.modal__body img{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:8px;
+}
+
+/* 모달 헤더를 position 기준으로 */
+.modal__head{
+  position: relative;
+}
+
+/* 닫기 버튼을 오른쪽 상단 구석으로 */
+.iconbtn--close{
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  z-index: 10;
+
+  font-size: 16px;
+  padding: 6px 10px;
+  border-radius: 10px;
+}
